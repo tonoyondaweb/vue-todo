@@ -1,4 +1,8 @@
 <script lang="ts">
+import { useTodoStore, type NewToDoItem } from "@/stores/todoStore";
+import { mapActions, mapState } from "pinia";
+import { v4 as uuid } from "uuid";
+
 export default {
   data() {
     let text: string = "";
@@ -6,15 +10,28 @@ export default {
       text,
     };
   },
+  computed: {
+    ...mapState(useTodoStore, ["todoList"]),
+  },
   methods: {
-    consoleItem() {
-      const item = {
-        id: "",
-        todoText: this.text,
+    ...mapActions(useTodoStore, ["addItem"]),
+    addNewItem() {
+      // adding new item
+      const newItem: NewToDoItem = {
+        id: uuid(),
+        todo: this.text,
         done: false,
       };
-      console.log(item);
+      if (newItem.todo.length > 0) this.addItem(newItem);
+
+      // after item added
       this.text = "";
+      const localTodos = JSON.stringify(this.todoList);
+      localStorage.setItem("todos", localTodos);
+      console.log(this.todoList);
+    },
+    consoleItem() {
+      console.log(this.todoList);
     },
   },
 };
@@ -30,10 +47,11 @@ export default {
         $style['add-button'],
         { [$style['add-button-enabled']]: text.length > 0 },
       ]"
-      @click="consoleItem"
+      @click="addNewItem"
     >
       Add Item
     </button>
+    <button @click="consoleItem">console item</button>
   </div>
 </template>
 
@@ -42,6 +60,7 @@ export default {
   width: 100%;
   max-width: 450px;
   text-align: center;
+  margin: 0 auto;
 }
 .text-input {
   width: 100%;
