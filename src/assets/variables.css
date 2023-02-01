@@ -1,0 +1,15 @@
+:root {
+  /* colors hex */
+  --bright-cyan: #56A3A6;
+  --cyan: #4e9295;
+  --dark-cyan: #084C61;
+  --bright-red: #DB504A;
+  --amber: #E3B505;
+  --gray: #4F6D7A;
+
+  /* colors opacity hex */
+  --dark-cyan-50: #084c6177;
+
+  /* fonts */
+  --poppins: 'Poppins', sans-serif;
+}
